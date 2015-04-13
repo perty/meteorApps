@@ -1,0 +1,57 @@
+<head>
+    <title>Jobs on a map</title>
+</head>
+
+<body>
+<h1>Welcome to jobs on a map!</h1>
+
+{{> map}}
+<hr/>
+<table>
+    <thead>
+    <tr>
+        <th>
+            Nr
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Delete
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each jobs}}
+    <tr>
+        {{> jobLine}}
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+</body>
+
+
+<template name="map">
+    <div class="map-container">
+        {{> googleMap name="map" options=mapOptions}}
+    </div>
+</template>
+
+<template name="jobLine">
+    <td>
+        {{nr}}
+    </td>
+    <td>
+        {{description}}
+    </td>
+    <td>
+        {{status}}
+    </td>
+    <td>
+        <button class="delete">&times;</button>
+    </td>
+</template>
