@@ -30,7 +30,8 @@ if (Meteor.isClient) {
                         draggable: true,
                         animation: google.maps.Animation.DROP,
                         position: new google.maps.LatLng(document.lat, document.lng),
-                        icon:'http://www.googlemapsmarkers.com/v1/13/0099FF/',
+                        icon:'http://www.googlemapsmarkers.com/v1/12/0099FF/',
+                        title: 'some title',
                         map: map.instance,
                         id: document._id
                     });

@@ -3,7 +3,7 @@
 </head>
 
 <body>
-<h1>Welcome to jobs on a map!</h1>
+<h1>Välkommen till jobs on a map!</h1>
 
 {{> map}}
 <hr/>
@@ -14,13 +14,16 @@
             Nr
         </th>
         <th>
-            Description
+            Adress
+        </th>
+        <th>
+            Beskrivning
         </th>
         <th>
             Status
         </th>
         <th>
-            Delete
+            Ta bort
         </th>
     </tr>
     </thead>
@@ -44,6 +47,9 @@
 <template name="jobLine">
     <td>
         {{nr}}
+    </td>
+    <td>
+        {{address}}
     </td>
     <td>
         {{description}}
