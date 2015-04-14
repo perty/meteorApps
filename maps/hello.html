@@ -29,9 +29,9 @@
     </thead>
     <tbody>
     {{#each jobs}}
-    <tr>
-        {{> jobLine}}
-    </tr>
+        <tr>
+            {{> jobLine}}
+        </tr>
     {{/each}}
     </tbody>
 </table>
@@ -46,10 +46,10 @@
 
 <template name="jobLine">
     <td>
-        {{nr}}
+        <input type="text" name="nr" class="nr" value="{{nr}}" size="2" />
     </td>
     <td>
-        {{address}}
+        <textarea name="address" class="address">{{address}}</textarea>
     </td>
     <td>
         {{description}}
@@ -60,4 +60,10 @@
     <td>
         <button class="delete">&times;</button>
     </td>
+</template>
+
+<template name="editJob">
+    <form class="jobForm">
+        <input type="text" name="nr" value="{{nr}}" size="2" />
+    </form>
 </template>
