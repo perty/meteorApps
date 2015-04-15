@@ -74,6 +74,9 @@ if (Meteor.isClient) {
         "click .delete": function () {
             Meteor.call("deleteJob", this._id);
         },
+        "click .panTo": function () {
+            Meteor.call("panToJob", this._id);
+        },
         "blur .nr": function (event) {
             var nr = event.target.value;
             Meteor.call("setNr", this._id, nr);
@@ -95,8 +98,11 @@ if (Meteor.isClient) {
 
 Meteor.methods({
     deleteJob: function (jobId) {
-        var job = JobsCollection.findOne(jobId);
         JobsCollection.remove(jobId);
+    },
+    panToJob: function (jobId) {
+        var job = JobsCollection.findOne(jobId);
+        GoogleMaps.maps.map.instance.panTo({lat: job.lat, lng: job.lng});
     },
     addJob: function (lat, lng) {
         JobsCollection.insert({lat: lat, lng: lng, status: "nytt", nr: 0});
