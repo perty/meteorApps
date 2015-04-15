@@ -66,7 +66,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("jobs");
     Template.body.helpers({
         jobs: function () {
-            return JobsCollection.find();
+            return JobsCollection.find({}, {sort: {nr: 1}});
         }
     });
 
@@ -99,7 +99,7 @@ Meteor.methods({
         JobsCollection.remove(jobId);
     },
     addJob: function (lat, lng) {
-        JobsCollection.insert({lat: lat, lng: lng, status: "nytt"});
+        JobsCollection.insert({lat: lat, lng: lng, status: "nytt", nr: 0});
     },
     setNr: function (jobId, nr) {
         JobsCollection.update(jobId, {$set: {nr: nr}});
