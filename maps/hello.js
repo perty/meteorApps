@@ -1,4 +1,4 @@
-Markers = new Mongo.Collection('markers');
+JobsCollection = new Mongo.Collection('markers');
 
 if (Meteor.isClient) {
     Meteor.startup(function () {
@@ -17,6 +17,13 @@ if (Meteor.isClient) {
     });
 
     Template.map.onCreated(function () {
+        function updateMarker(marker, nr, description) {
+            marker.setTitle(description);
+            if (!isNaN(parseFloat(nr)) && isFinite(nr)) {
+                marker.setIcon('http://www.googlemapsmarkers.com/v1/' + nr + '/0099FF/');
+            }
+        }
+
         GoogleMaps.ready('map', function (map) {
             google.maps.event.addListener(map.instance, 'click', function (event) {
                 Meteor.call("addJob", event.latLng.lat(), event.latLng.lng());
@@ -24,7 +31,7 @@ if (Meteor.isClient) {
 
             var markers = {};
 
-            Markers.find().observe({
+            JobsCollection.find().observe({
                 added: function (document) {
                     var marker = new google.maps.Marker({
                         draggable: true,
@@ -35,15 +42,17 @@ if (Meteor.isClient) {
                         map: map.instance,
                         id: document._id
                     });
+                    updateMarker(marker, document.nr, document.description);
 
                     google.maps.event.addListener(marker, 'dragend', function (event) {
-                        Markers.update(marker.id, {$set: {lat: event.latLng.lat(), lng: event.latLng.lng()}});
+                        JobsCollection.update(marker.id, {$set: {lat: event.latLng.lat(), lng: event.latLng.lng()}});
                     });
 
                     markers[document._id] = marker;
                 },
                 changed: function (newDocument, oldDocument) {
                     markers[newDocument._id].setPosition({lat: newDocument.lat, lng: newDocument.lng});
+                    updateMarker(markers[newDocument._id], newDocument.nr, newDocument.description);
                 },
                 removed: function (oldDocument) {
                     markers[oldDocument._id].setMap(null);
@@ -57,7 +66,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("jobs");
     Template.body.helpers({
         jobs: function () {
-            return Markers.find();
+            return JobsCollection.find();
         }
     });
 
@@ -72,6 +81,10 @@ if (Meteor.isClient) {
         "blur .address": function (event) {
             var address = event.target.value;
             Meteor.call("setAddress", this._id, address);
+        },
+        "blur .description": function (event) {
+            var description = event.target.value;
+            Meteor.call("setDescription", this._id, description);
         }
     });
 
@@ -79,17 +92,20 @@ if (Meteor.isClient) {
 
 Meteor.methods({
     deleteJob: function (jobId) {
-        var job = Markers.findOne(jobId);
-        Markers.remove(jobId);
+        var job = JobsCollection.findOne(jobId);
+        JobsCollection.remove(jobId);
     },
     addJob: function (lat, lng) {
-        Markers.insert({lat: lat, lng: lng, status: "new"});
+        JobsCollection.insert({lat: lat, lng: lng, status: "nytt"});
     },
     setNr: function (jobId, nr) {
-        Markers.update(jobId, {$set: {nr: nr}});
+        JobsCollection.update(jobId, {$set: {nr: nr}});
     },
     setAddress: function (jobId, address) {
-        Markers.update(jobId, {$set: {address: address}});
+        JobsCollection.update(jobId, {$set: {address: address}});
+    },
+    setDescription: function (jobId, description) {
+        JobsCollection.update(jobId, {$set: {description: description}});
     }
 });
 
