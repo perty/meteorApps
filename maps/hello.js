@@ -85,6 +85,9 @@ if (Meteor.isClient) {
         "blur .description": function (event) {
             var description = event.target.value;
             Meteor.call("setDescription", this._id, description);
+        },
+        "click .status": function () {
+            Meteor.call("statusClick", this._id, this.status);
         }
     });
 
@@ -106,6 +109,20 @@ Meteor.methods({
     },
     setDescription: function (jobId, description) {
         JobsCollection.update(jobId, {$set: {description: description}});
+    },
+    statusClick: function(jobId, currentStatus) {
+         function nextStatus(currentStatus) {
+             switch (currentStatus) {
+                case "nytt":
+                    return "påbörjat";
+                case "påbörjat":
+                    return "avslutat";
+                default :
+                    return "nytt";
+            }
+        }
+        newStatus = nextStatus(currentStatus);
+        JobsCollection.update(jobId, {$set: {status: newStatus}})
     }
 });
 
