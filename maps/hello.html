@@ -3,38 +3,60 @@
 </head>
 
 <body>
-<h1>Välkommen till jobs on a map!</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
 
-{{> map}}
-<hr/>
-<table>
-    <thead>
-    <tr>
-        <th>
-            Nr
-        </th>
-        <th>
-            Adress
-        </th>
-        <th>
-            Beskrivning
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Centrera
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each jobs}}
-        <tr>
-            {{> jobLine}}
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
+        </div>
+        <div class="col-md-8">
+            <h1>Välkommen till jobs on a map!</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            {{> map}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <hr/>
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        Nr
+                    </th>
+                    <th>
+                        Adress
+                    </th>
+                    <th>
+                        Beskrivning
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Centrera
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each jobs}}
+                    <tr>
+                        {{> jobLine}}
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 </body>
 
 
@@ -46,7 +68,7 @@
 
 <template name="jobLine">
     <td>
-        <input type="text" name="nr" class="nr" value="{{nr}}" size="2" />
+        <input type="text" name="nr" class="nr" value="{{nr}}" size="2"/>
     </td>
     <td>
         <textarea name="address" class="address">{{address}}</textarea>
@@ -64,6 +86,6 @@
 
 <template name="editJob">
     <form class="jobForm">
-        <input type="text" name="nr" value="{{nr}}" size="2" />
+        <input type="text" name="nr" value="{{nr}}" size="2"/>
     </form>
 </template>
