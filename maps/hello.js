@@ -1,4 +1,5 @@
 JobsCollection = new Mongo.Collection('markers');
+DeletedJobs = new Mongo.Collection('deletedJobs');
 
 if (Meteor.isClient) {
     Meteor.startup(function () {
@@ -74,6 +75,11 @@ if (Meteor.isClient) {
             return JobsCollection.find({}, {sort: {nr: 1}});
         }
     });
+    Template.deletedJobs.helpers({
+        jobs: function() {
+            return DeletedJobs.find({}, {sort: {deletedDate: -1}})
+        }
+    });
 
     Template.body.events({
         "click #mypos" : function() {
@@ -130,14 +136,39 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.deletedJobLine.events({
+        "click .panTo": function () {
+            Meteor.call("panToJobDeleted", this._id);
+        },
+        "click .restore": function () {
+            Meteor.call("restoreJob", this._id);
+        }
+    })
+
 }
 
 Meteor.methods({
     deleteJob: function (jobId) {
-        JobsCollection.remove(jobId);
+        var job = JobsCollection.findOne(jobId);
+        if(job !== undefined) {
+            job.deletedDate = new Date();
+            DeletedJobs.insert(job);
+            JobsCollection.remove(jobId);
+        }
+    },
+    restoreJob: function (jobId) {
+        var job = DeletedJobs.findOne(jobId);
+        if(job !== undefined){
+            JobsCollection.insert(job);
+            DeletedJobs.remove(jobId);
+        }
     },
     panToJob: function (jobId) {
         var job = JobsCollection.findOne(jobId);
+        GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
+    },
+    panToJobDeleted: function (jobId) {
+        var job = DeletedJobs.findOne(jobId);
         GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
     },
     addJob: function (lat, lng) {
