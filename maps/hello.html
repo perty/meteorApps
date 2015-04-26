@@ -22,34 +22,37 @@
     <div class="row">
         <div class="col-md-12">
             <hr/>
-            <table>
-                <thead>
-                <tr>
-                    <th>
-                        Nr
-                    </th>
-                    <th>
-                        Adress
-                    </th>
-                    <th>
-                        Beskrivning
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Centrera
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {{#each jobs}}
-                    <tr>
-                        {{> jobLine}}
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
+            <div class="tabpanel">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation">
+                        <a href="#jobb" aria-controls="jobb" role="tab" data-toggle="tab">
+                            Jobb
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#planering" aria-controls="planering" role="tab" data-toggle="tab">
+                            Planering
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#admin" aria-controls="admin" role="tab" data-toggle="tab">
+                            Administration
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="jobb">
+                        {{> jobPanel }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="planering">
+                        <h1>Planering</h1>
+                        {{> planningPanel }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="admin">
+                        <h1>Administration</h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -63,7 +66,87 @@
     </div>
 </template>
 
+<template name="jobPanel">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Nr
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Centrera
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                {{> jobLine}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
 <template name="jobLine">
+    <td>
+        {{nr}}
+    </td>
+    <td>
+        <div>{{address}}</div>
+    </td>
+    <td>
+        <div>{{description}}</div>
+    </td>
+    <td>
+        <button class="status">{{status}}</button>
+    </td>
+    <td>
+        <button class="panTo">&#10807;</button>
+    </td>
+</template>
+
+<template name="planningPanel">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Nr
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Centrera
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                {{> planningLine}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="planningLine">
     <td>
         <input type="text" name="nr" class="nr" value="{{nr}}" size="2"/>
     </td>
@@ -81,8 +164,3 @@
     </td>
 </template>
 
-<template name="editJob">
-    <form class="jobForm">
-        <input type="text" name="nr" value="{{nr}}" size="2"/>
-    </form>
-</template>

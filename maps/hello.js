@@ -64,7 +64,12 @@ if (Meteor.isClient) {
     });
 
     Meteor.subscribe("jobs");
-    Template.body.helpers({
+    Template.jobPanel.helpers({
+        jobs: function () {
+            return JobsCollection.find({}, {sort: {nr: 1}});
+        }
+    });
+    Template.planningPanel.helpers({
         jobs: function () {
             return JobsCollection.find({}, {sort: {nr: 1}});
         }
@@ -93,6 +98,15 @@ if (Meteor.isClient) {
     });
 
     Template.jobLine.events({
+       "click .panTo" :  function () {
+           Meteor.call("panToJob", this._id);
+       },
+        "click .status": function () {
+            Meteor.call("statusClick", this._id, this.status);
+        }
+    });
+
+    Template.planningLine.events({
         "click .delete": function () {
             Meteor.call("deleteJob", this._id);
         },
