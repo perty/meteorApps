@@ -76,14 +76,14 @@ if (Meteor.isClient) {
         }
     });
     Template.deletedJobs.helpers({
-        jobs: function() {
+        jobs: function () {
             return DeletedJobs.find({}, {sort: {deletedDate: -1}})
         }
     });
 
     Template.body.events({
-        "click #mypos" : function() {
-            if(navigator.geolocation) {
+        "click #mypos": function () {
+            if (navigator.geolocation) {
                 var currentPosition = new google.maps.Marker({
                     icon: 'http://google.com/mapfiles/arrow.png',
                     title: 'Du är här',
@@ -93,7 +93,7 @@ if (Meteor.isClient) {
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     GoogleMaps.maps.map.instance.setCenter({lat: pos.coords.latitude, lng: pos.coords.longitude});
                 });
-                navigator.geolocation.watchPosition(function(pos) {
+                navigator.geolocation.watchPosition(function (pos) {
                     currentPosition.setPosition({lat: pos.coords.latitude, lng: pos.coords.longitude});
                 });
             } else {
@@ -104,9 +104,9 @@ if (Meteor.isClient) {
     });
 
     Template.jobLine.events({
-       "click .panTo" :  function () {
-           Meteor.call("panToJob", this._id);
-       },
+        "click .panTo": function () {
+            Meteor.call("panToJob", this._id);
+        },
         "click .status": function () {
             Meteor.call("statusClick", this._id, this.status);
         }
@@ -150,7 +150,7 @@ if (Meteor.isClient) {
 Meteor.methods({
     deleteJob: function (jobId) {
         var job = JobsCollection.findOne(jobId);
-        if(job !== undefined) {
+        if (job !== undefined) {
             job.deletedDate = new Date();
             DeletedJobs.insert(job);
             JobsCollection.remove(jobId);
@@ -158,7 +158,7 @@ Meteor.methods({
     },
     restoreJob: function (jobId) {
         var job = DeletedJobs.findOne(jobId);
-        if(job !== undefined){
+        if (job !== undefined) {
             JobsCollection.insert(job);
             DeletedJobs.remove(jobId);
         }
@@ -183,21 +183,20 @@ Meteor.methods({
     setDescription: function (jobId, description) {
         JobsCollection.update(jobId, {$set: {description: description}});
     },
-    statusClick: function(jobId, currentStatus) {
-         function nextStatus(currentStatus) {
-             switch (currentStatus) {
-                case "nytt":
-                    return "påbörjat";
-                case "påbörjat":
-                    return "avslutat";
-                default :
-                    return "nytt";
+    statusClick: function (jobId, currentStatus) {
+        function nextStatus(currentStatus) {
+            for (i = 0; i < statusList.length; i++) {
+                if (statusList[i] == currentStatus) {
+                    return statusList[i + 1 % statusList.length]
+                }
             }
+            return statusList[0];
         }
         newStatus = nextStatus(currentStatus);
         JobsCollection.update(jobId, {$set: {status: newStatus}})
     }
 });
+var statusList = ["förfrågan", "offererad", "accepterad", "påbörjat", "klart", "fakturerat"];
 
 if (Meteor.isServer) {
     Meteor.startup(function () {
