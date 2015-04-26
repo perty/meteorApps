@@ -70,6 +70,28 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.body.events({
+        "click #mypos" : function() {
+            if(navigator.geolocation) {
+                var currentPosition = new google.maps.Marker({
+                    icon: 'http://google.com/mapfiles/arrow.png',
+                    title: 'Du är här',
+                    map: GoogleMaps.maps.map.instance,
+                    id: 'currentPos'
+                });
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                    GoogleMaps.maps.map.instance.setCenter({lat: pos.coords.latitude, lng: pos.coords.longitude});
+                });
+                navigator.geolocation.watchPosition(function(pos) {
+                    currentPosition.setPosition({lat: pos.coords.latitude, lng: pos.coords.longitude});
+                });
+            } else {
+                var x = document.getElementById("mypos");
+                x.innerHTML = "Stöds inte av din webbläsare";
+            }
+        }
+    });
+
     Template.jobLine.events({
         "click .delete": function () {
             Meteor.call("deleteJob", this._id);
@@ -102,7 +124,7 @@ Meteor.methods({
     },
     panToJob: function (jobId) {
         var job = JobsCollection.findOne(jobId);
-        GoogleMaps.maps.map.instance.panTo({lat: job.lat, lng: job.lng});
+        GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
     },
     addJob: function (lat, lng) {
         JobsCollection.insert({lat: lat, lng: lng, status: "nytt", nr: 0});
