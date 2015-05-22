@@ -1,6 +1,15 @@
 JobsCollection = new Mongo.Collection('markers');
 DeletedJobs = new Mongo.Collection('deletedJobs');
 
+function panToJob(jobId) {
+    var job = JobsCollection.findOne(jobId);
+    GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
+}
+function panToJobDeleted(jobId) {
+    var job = DeletedJobs.findOne(jobId);
+    GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
+}
+
 if (Meteor.isClient) {
     Meteor.startup(function () {
         GoogleMaps.load();
@@ -105,7 +114,7 @@ if (Meteor.isClient) {
 
     Template.jobLine.events({
         "click .panTo": function () {
-            Meteor.call("panToJob", this._id);
+            panToJob(this._id);
         },
         "click .status": function () {
             Meteor.call("statusClick", this._id, this.status);
@@ -117,7 +126,7 @@ if (Meteor.isClient) {
             Meteor.call("deleteJob", this._id);
         },
         "click .panTo": function () {
-            Meteor.call("panToJob", this._id);
+            panToJob(this._id);
         },
         "blur .nr": function (event) {
             var nr = event.target.value;
@@ -138,7 +147,7 @@ if (Meteor.isClient) {
 
     Template.deletedJobLine.events({
         "click .panTo": function () {
-            Meteor.call("panToJobDeleted", this._id);
+            panToJobDeleted(this._id);
         },
         "click .restore": function () {
             Meteor.call("restoreJob", this._id);
@@ -162,14 +171,6 @@ Meteor.methods({
             JobsCollection.insert(job);
             DeletedJobs.remove(jobId);
         }
-    },
-    panToJob: function (jobId) {
-        var job = JobsCollection.findOne(jobId);
-        GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
-    },
-    panToJobDeleted: function (jobId) {
-        var job = DeletedJobs.findOne(jobId);
-        GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
     },
     addJob: function (lat, lng) {
         JobsCollection.insert({lat: lat, lng: lng, status: "nytt", nr: 0});
