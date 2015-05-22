@@ -10,10 +10,11 @@ function panToJobDeleted(jobId) {
     GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
 }
 
-function popitup(title) {
+function popitup(jobId) {
+    var job = JobsCollection.findOne(jobId);
     var popUp = document.getElementById("thePopUp");
     var popUpButton = document.getElementById("popUpButton");
-    $(popUp).html(title);
+    $(popUp).html("<p>" + job.description + "</p><p>" + job.address + "<p>");
     $(popUpButton).click();
 }
 
@@ -67,7 +68,7 @@ if (Meteor.isClient) {
                     });
 
                     google.maps.event.addListener(marker, 'click', function (event) {
-                        popitup(this.title);
+                        popitup(this.id);
                     });
 
                     markers[document._id] = marker;
@@ -205,6 +206,7 @@ Meteor.methods({
             }
             return statusList[0];
         }
+
         newStatus = nextStatus(currentStatus);
         JobsCollection.update(jobId, {$set: {status: newStatus}})
     }
