@@ -10,6 +10,13 @@ function panToJobDeleted(jobId) {
     GoogleMaps.maps.map.instance.setCenter({lat: job.lat, lng: job.lng});
 }
 
+function popitup(title) {
+    var popUp = document.getElementById("thePopUp");
+    var popUpButton = document.getElementById("popUpButton");
+    $(popUp).html(title);
+    $(popUpButton).click();
+}
+
 if (Meteor.isClient) {
     Meteor.startup(function () {
         GoogleMaps.load();
@@ -36,7 +43,7 @@ if (Meteor.isClient) {
 
         GoogleMaps.ready('map', function (map) {
             google.maps.event.addListener(map.instance, 'click', function (event) {
-                Meteor.call("addJob", event.latLng.lat(), event.latLng.lng());
+                // Meteor.call("addJob", event.latLng.lat(), event.latLng.lng());
             });
 
             var markers = {};
@@ -45,6 +52,7 @@ if (Meteor.isClient) {
                 added: function (document) {
                     var marker = new google.maps.Marker({
                         draggable: true,
+                        clickable: true,
                         animation: google.maps.Animation.DROP,
                         position: new google.maps.LatLng(document.lat, document.lng),
                         icon: 'http://www.googlemapsmarkers.com/v1/12/0099FF/',
@@ -56,6 +64,10 @@ if (Meteor.isClient) {
 
                     google.maps.event.addListener(marker, 'dragend', function (event) {
                         JobsCollection.update(marker.id, {$set: {lat: event.latLng.lat(), lng: event.latLng.lng()}});
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function (event) {
+                        popitup(this.title);
                     });
 
                     markers[document._id] = marker;
