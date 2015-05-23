@@ -1,0 +1,67 @@
+<template name="admin">
+    <h1>Administration</h1>
+    {{> adminMap }}
+    <h2>Borttagna jobb</h2>
+    {{> deletedJobs }}
+</template>
+
+<template name="deletedJobs">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Nr
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Borttagen
+            </th>
+            <th>
+                Centrera
+            </th>
+            <th>
+                Återställ
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                {{> deletedJobLine}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="deletedJobLine">
+    <td>
+        {{nr}}
+    </td>
+    <td>
+        <div>{{address}}</div>
+    </td>
+    <td>
+        <div>{{description}}</div>
+    </td>
+    <td>
+        {{status}}
+    </td>
+    <td>
+        {{deletedDate}}
+    </td>
+    <td>
+        <button class="panTo">&#10807;</button>
+    </td>
+    <td>
+        <button class="restore">Åter</button>
+    </td>
+</template>

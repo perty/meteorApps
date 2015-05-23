@@ -1,0 +1,68 @@
+<template name="hello">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Arbeta</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{> map }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="btn btn-success" id="mypos">Var är jag?</button>
+        </div>
+    </div>
+    {{> jobPanel}}
+</template>
+
+<template name="jobPanel">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Nr
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Centrera
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                {{> jobLine}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="jobLine">
+    <td>
+        {{nr}}
+    </td>
+    <td>
+        <div>{{address}}</div>
+    </td>
+    <td>
+        <div>{{description}}</div>
+    </td>
+    <td>
+        <button class="status">{{status}}</button>
+    </td>
+    <td>
+        <button class="panTo">&#10807;</button>
+    </td>
+</template>
+

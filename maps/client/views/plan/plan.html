@@ -1,0 +1,61 @@
+<template name="plan">
+    <h1>Planering</h1>
+    {{> planMap }}
+    {{> planningPanel }}
+</template>
+
+<template name="planningPanel">
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>
+                Nr
+            </th>
+            <th>
+                Adress
+            </th>
+            <th>
+                Beskrivning
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Centrera
+            </th>
+            <th>
+                Ta bort
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                {{> planningLine}}
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="planningLine">
+    <td>
+        <input type="text" name="nr" class="nr" value="{{nr}}" size="2"/>
+    </td>
+    <td>
+        <textarea name="address" class="address">{{address}}</textarea>
+    </td>
+    <td>
+        <textarea name="description" class="description">{{description}}</textarea>
+    </td>
+    <td>
+        <button class="status">{{status}}</button>
+    </td>
+    <td>
+        <button class="panTo">&#10807;</button>
+    </td>
+    <td>
+        <button class="delete">&times;</button>
+    </td>
+</template>
+
