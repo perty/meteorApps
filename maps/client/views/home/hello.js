@@ -9,7 +9,7 @@ if (Meteor.isClient) {
         GoogleMaps.load();
     });
 
-    Template.body.events({
+    Template.hello.events({
         "click #mypos": function () {
             if (navigator.geolocation) {
                 var currentPosition = new google.maps.Marker({
