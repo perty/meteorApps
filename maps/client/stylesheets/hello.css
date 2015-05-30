@@ -4,8 +4,6 @@
     height: 500px;
 }
 
-@media screen and (max-width: 640px) {
-    body {
-        font-size: 3em;
-    }
+.big-text {
+    font-size: 2em;
 }
