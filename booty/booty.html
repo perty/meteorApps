@@ -1,0 +1,52 @@
+<head>
+    <title>booty</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col md-2"></div>
+        <div class="col md-2">
+            <h1>Welcome to Meteor!</h1>
+            {{> command}}
+        </div>
+        <div class="col md-6" style="border:solid 1px;">
+            {{#each articles}}
+                {{> article }}
+            {{/each}}
+        </div>
+        <div class="col md-2"></div>
+    </div>
+</div>
+</body>
+
+<template name="command">
+    <button class="btn btn-primary btn-lg">New article</button>
+    <p>You've pressed the button {{counter}} times.</p>
+</template>
+
+<template name="article">
+    <h3>Your article</h3>
+    <div class="summernote">{{articleContents}}</div>
+</template>
+
+<!--
+<template name="article">
+    <h2>Your text</h2>
+    {{> editableText collection="articles" field="articleContents" wysiwyg=true}}
+</template>-->
+
+<!--<template name="article">
+    <div style="border:solid 1px;">
+        Here: {{articleContents}}
+    </div>
+</template>-->
+
+<!--<template name="article">
+<div style="border:solid 1px;">
+{{> froalaReactive _onContentChanged=doSave _value=this.articleContents}}
+</div>
+</template>-->
+
