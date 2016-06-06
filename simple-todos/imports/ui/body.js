@@ -1,13 +1,12 @@
-
 import { Template } from 'meteor/templating';
 
-import { Tasks } from '../api/tasks.js'
+import { Tasks } from '../api/tasks.js';
 
 import './body.html';
 
 Template.body.helpers({
-    tasks() {
-        //return Tasks.find({});
-        return [ {text: 'begin'} , Tasks.find({}), {text: 'end'}]
-    }
+  tasks() {
+    return Tasks.find({});
+  }
 });
+
