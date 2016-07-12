@@ -1,0 +1,48 @@
+<head>
+    <title>kalender</title>
+</head>
+
+<body>
+<h1>Welcome to Meteor!</h1>
+
+<table border="1">
+    <tr>
+        {{> weekdays }}
+    </tr>
+    {{> kalendar }}
+</table>
+
+
+</body>
+
+<template name="weekdays">
+    {{#each day in wdays}}
+        <td>{{day}}</td>
+    {{/each}}
+</template>
+
+<template name="kalendar">
+    {{#each row in kalendarRows}}
+        <tr>
+            {{> kalendarRow row=row }}
+        </tr>
+    {{/each}}
+</template>
+
+<template name="kalendarRow">
+    {{#each day in row }}
+            {{> kalendarCell day=day }}
+    {{/each}}
+</template>
+
+<template name="kalendarCell">
+    <td>
+        {{day}}
+    </td>
+</template>
+
+<template name="hello">
+    <button>Click Me</button>
+    <p>You've pressed the button {{counter}} times.</p>
+</template>
+
