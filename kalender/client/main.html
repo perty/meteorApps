@@ -5,13 +5,12 @@
 <body>
 <h1>Welcome to Meteor!</h1>
 
-<table border="1">
-    <tr>
-        {{> weekdays }}
-    </tr>
-    {{> kalendar }}
-</table>
+{{> kalendar }}
 
+<div id="h1">
+
+</div>
+{{> hello }}
 
 </body>
 
@@ -22,21 +21,26 @@
 </template>
 
 <template name="kalendar">
-    {{#each row in kalendarRows}}
+    <table border="1">
         <tr>
-            {{> kalendarRow row=row }}
+            {{> weekdays }}
+        </tr>
+    {{#each row in kalendarRows}}
+        <tr id="r{{@index}}">
+            {{> kalendarRow row=row  }}
         </tr>
     {{/each}}
+    </table>
 </template>
 
 <template name="kalendarRow">
     {{#each day in row }}
-            {{> kalendarCell day=day }}
+        {{> kalendarCell day=day row=row}}
     {{/each}}
 </template>
 
 <template name="kalendarCell">
-    <td>
+    <td id="d{{day}}">
         {{day}}
     </td>
 </template>
